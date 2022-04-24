@@ -2,19 +2,18 @@
 import { onMount } from "svelte";
 
     import type ImageFile from "../../models/ImageFile";
-    import { images } from "../../store";
+    import { dataIndex, images } from "../../store";
 
-    let i = 0;
 
     let canvas: HTMLCanvasElement;
     let ctx: CanvasRenderingContext2D;
 
-    $: if(ctx && $images) draw(i);
+    $: if(ctx && $images) draw($dataIndex);
 
     onMount(() => {
         ctx = canvas.getContext('2d');
 
-        setTimeout(() => draw(i), 500);
+        setTimeout(() => draw($dataIndex), 500);
     })
 
     function readImage(file: File):  Promise<ImageFile>{
@@ -77,23 +76,23 @@ import { onMount } from "svelte";
 
 </script>
 
-{#if $images && $images[i]}
+{#if $images}
 <button on:click={clear}>clear dataset</button>
 <h1 contenteditable={true} on:input={
     (e) => {
         const text = e.target instanceof HTMLElement ? e.target.innerText : '0';
-        i = Number(text) ?? 0;
+        $dataIndex = Number(text) ?? 0;
     }}
 >
-{i}
+{$dataIndex}/{$images.length}
 </h1>
-<h2>{$images[i].name}</h2>
+<h2>{$images[$dataIndex].name}</h2>
 {/if}
 <canvas bind:this={canvas} />
 
 {#if $images && $images.length > 0}
-    <button on:click={() => i = i-1}>previous</button>
-    <button on:click={() => i = i+1}>next</button>
+    <button on:click={() => $dataIndex = $dataIndex - 1}>previous</button>
+    <button on:click={() => $dataIndex = $dataIndex + 1}>next</button>
 {:else}
     upload your dataset:
     <input type="file" multiple={true} accept="image/*" on:change={onUpload} />

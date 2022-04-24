@@ -17,6 +17,8 @@ export const labelsStr = (function () {
     }
 })();
 
+export const labelSet = wStorage<string[]>('label_set', []);
+
 export const dataIndex = wStorage('data_index', 0);
 
 export const images = wIDatabase<ImageFile[]>('image_dataset', null);

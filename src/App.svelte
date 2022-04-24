@@ -1,14 +1,23 @@
 <script lang="ts">
-	export let name: string;
+import DatasetManager from "./Components/DatasetManager/index.svelte";
+import LabelsManager from "./Components/LabelsManager/index.svelte";
+
+
+
+	let labelsStr = "";
 </script>
 
 <main>
-	<h1>Hello {name}!</h1>
-	<p>Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn how to build Svelte apps.</p>
+	<h1>Label generator</h1>
+	<DatasetManager />
+	<LabelsManager />
 </main>
 
 <style>
 	main {
+		display: flex;
+		flex-flow: column;
+		align-items: center;
 		text-align: center;
 		padding: 1em;
 		max-width: 240px;

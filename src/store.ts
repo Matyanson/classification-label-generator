@@ -9,6 +9,7 @@ export const labelsStr = (function () {
         ...storage,
         getLabels: function () {
             let s = get(storage);
+            if(!s) return [];
             const separators = " ,;";
             const reg = RegExp(`[${separators}]`);
             return s.split(reg).filter(lab => lab.trim().length > 0);

@@ -1,9 +1,18 @@
 <script lang="ts">
+import { onMount } from "svelte";
+
     import { labelsStr } from "../../store";
 
+    // load labels from url
+    const urlParams = new URLSearchParams(window.location.search);
+    const labelsFromUrl = urlParams.get('labels');
+    $labelsStr = labelsFromUrl;
 
     let labels: string[] = [];
-    labelsStr.subscribe(() => labels = labelsStr.getLabels());
+    labelsStr.subscribe(() => {
+        labels = labelsStr.getLabels();
+        window.history.replaceState({}, '', '?labels='+labels.join(','));
+    });
 
     
 </script>

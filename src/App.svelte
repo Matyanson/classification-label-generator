@@ -15,6 +15,7 @@ import LabelsManager from "./Components/LabelsManager/index.svelte";
 
 <style>
 	main {
+		box-sizing: border-box;
 		display: flex;
 		flex-flow: column;
 		align-items: center;

@@ -74,29 +74,40 @@ import { onMount } from "svelte";
         })
     }
 
+    const nextData = () => $dataIndex = $dataIndex + 1;
+    const prevData = () => $dataIndex = $dataIndex - 1;
+
+    const onKeyDown = (e: KeyboardEvent) => {
+		if(['ArrowLeft', 'ArrowRight'].includes(e.key))
+			e.preventDefault();
+		switch(e.key) {
+			case 'ArrowLeft': prevData(); break;
+			case 'ArrowRight': nextData(); break;
+		}
+	}
+
 </script>
 
 {#if $images}
 <button on:click={clear}>clear dataset</button>
-<h1 contenteditable={true} on:input={
-    (e) => {
-        const text = e.target instanceof HTMLElement ? e.target.innerText : '0';
-        $dataIndex = Number(text) ?? 0;
-    }}
->
-{$dataIndex}/{$images.length}
+<h1>
+    <input type="number" bind:value={$dataIndex} >/{$images.length}
 </h1>
-<h2>{$images[$dataIndex].name}</h2>
+<h2>{$images[$dataIndex]?.name}</h2>
 {/if}
 <canvas bind:this={canvas} />
 
 {#if $images && $images.length > 0}
-    <button on:click={() => $dataIndex = $dataIndex - 1}>previous</button>
-    <button on:click={() => $dataIndex = $dataIndex + 1}>next</button>
+    <div class="controls">
+        <button on:click={prevData}>previous</button>
+        <button on:click={nextData}>next</button>
+    </div>
 {:else}
     upload your dataset:
     <input type="file" multiple={true} accept="image/*" on:change={onUpload} />
 {/if}
+
+<svelte:window on:keydown={onKeyDown} />
 
 
 <style>
@@ -104,5 +115,8 @@ import { onMount } from "svelte";
         width: 100%;
         max-width: 300px;
         image-rendering: pixelated;
+    }
+    h1 input[type=number] {
+        width: 3em;
     }
 </style>

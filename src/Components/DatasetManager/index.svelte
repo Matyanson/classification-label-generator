@@ -9,7 +9,7 @@ import { onMount } from "svelte";
     let canvas: HTMLCanvasElement;
     let ctx: CanvasRenderingContext2D;
 
-    $: if(ctx) draw(i);
+    $: if(ctx && $images) draw(i);
 
     onMount(() => {
         ctx = canvas.getContext('2d');
@@ -62,6 +62,8 @@ import { onMount } from "svelte";
         }
         
         const img = await getImageFromUrl(url);
+        canvas.width = img.width;
+        canvas.height = img.height;
         ctx.drawImage(img, 0, 0);
     }
 
@@ -75,21 +77,33 @@ import { onMount } from "svelte";
 
 </script>
 
+{#if $images && $images[i]}
+<button on:click={clear}>clear dataset</button>
+<h1 contenteditable={true} on:input={
+    (e) => {
+        const text = e.target instanceof HTMLElement ? e.target.innerText : '0';
+        i = Number(text) ?? 0;
+    }}
+>
+{i}
+</h1>
+<h2>{$images[i].name}</h2>
+{/if}
+<canvas bind:this={canvas} />
+
 {#if $images && $images.length > 0}
-    <h1 contenteditable={true} on:input={
-		(e) => {
-			const text = e.target instanceof HTMLElement ? e.target.innerText : '0';
-			i = Number(text) ?? 0;
-		}}
-    >{i}</h1>
-    <button on:click={clear}>clear dataset</button><br>
     <button on:click={() => i = i-1}>previous</button>
     <button on:click={() => i = i+1}>next</button>
 {:else}
     upload your dataset:
     <input type="file" multiple={true} accept="image/*" on:change={onUpload} />
 {/if}
-{#if $images && $images[i]}
-<h2>{$images[i].name}</h2>
-{/if}
-<canvas bind:this={canvas} />
+
+
+<style>
+    canvas {
+        width: 100%;
+        max-width: 300px;
+        image-rendering: pixelated;
+    }
+</style>

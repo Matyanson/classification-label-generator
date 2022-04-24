@@ -20,7 +20,7 @@ import LabelsManager from "./Components/LabelsManager/index.svelte";
 		align-items: center;
 		text-align: center;
 		padding: 1em;
-		max-width: 240px;
+		width: 100%;
 		margin: 0 auto;
 	}
 
@@ -29,11 +29,5 @@ import LabelsManager from "./Components/LabelsManager/index.svelte";
 		text-transform: uppercase;
 		font-size: 4em;
 		font-weight: 100;
-	}
-
-	@media (min-width: 640px) {
-		main {
-			max-width: none;
-		}
 	}
 </style>

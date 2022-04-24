@@ -1,4 +1,5 @@
 import { get } from "svelte/store";
+import type ImageFile from "./models/ImageFile";
 import { wIDatabase, wStorage } from "./writable-stores";
 
 export const labelsStr = (function () {
@@ -15,4 +16,4 @@ export const labelsStr = (function () {
     }
 })();
 
-export const images = wIDatabase('image_dataset', null);
+export const images = wIDatabase<ImageFile[]>('image_dataset', null);
